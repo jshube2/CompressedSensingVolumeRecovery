@@ -6,7 +6,7 @@ function volume = loadCT()
     
     rootdir = pwd;
     % Read CT Data
-    cd([rootdir '\data\CT']);
+    cd([rootdir '/data/CT']);
     volumeList = dir('*IMA');
     for i = 1:length(volumeList)
         volume_raw(:,:,i) = dicomread(volumeList(i).name);
