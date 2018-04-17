@@ -18,7 +18,9 @@ title('Original Volume');
 %------------------------------(ALGORITHM A)------------------------------%
 %-----------------------------------ALM-----------------------------------%
 for i = 1:length(sparsity)
+    %noisy_volume = makeSomeNoise(volume, 30);
     sparse_volume = makeSparse(volume, sparsity(i));
+    %sparse_volume = makeSparsePatches(volume, sparsity(i), 4);
     viewCrossSection(sparse_volume);
     title('Sparse Volume');
     %makeVolumeMovie(sparse_volume); % USE THIS TO SAVE 3D VOLUME TO VIDEO
