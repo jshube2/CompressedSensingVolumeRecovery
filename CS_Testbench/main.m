@@ -5,7 +5,7 @@ clc;
 %-------------------------EXPERIMENT PARAMETERS---------------------------%
 %-------------------------------------------------------------------------%
 %sparsity = [10 20 30 40 50 60 70 80 90];
-sparsity = [10];
+sparsity = [50];
 
 
 %-------------------------------------------------------------------------%
@@ -18,7 +18,7 @@ title('Original Volume');
 %------------------------------(ALGORITHM A)------------------------------%
 %-----------------------------------ALM-----------------------------------%
 for i = 1:length(sparsity)
-    %noisy_volume = makeSomeNoise(volume, 30);
+    %sparse_volume = makeCorrupt(volume, sparsity(i));
     sparse_volume = makeSparse(volume, sparsity(i));
     %sparse_volume = makeSparsePatches(volume, sparsity(i), 4);
     viewCrossSection(sparse_volume);
