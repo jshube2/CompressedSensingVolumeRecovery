@@ -25,12 +25,12 @@ for j=1:length(varargin)/2,
 	if iscell(varargin{j*2}),
 		eval(['clear ',varargin{j*2-1},';']);
 		for k=1:length(varargin{j*2}),
-			disp([varargin{j*2-1} '{',num2str(k),'} = ''' varargin{j*2}{k} ''';']);
+% 			disp([varargin{j*2-1} '{',num2str(k),'} = ''' varargin{j*2}{k} ''';']);
 			eval([varargin{j*2-1} '{',num2str(k),'} = ''' varargin{j*2}{k} ''';']);
 		end
 	else
 
-		disp([varargin{j*2-1} ' = ' mat2str(varargin{j*2}) ';']);
+% 		disp([varargin{j*2-1} ' = ' mat2str(varargin{j*2}) ';']);
 		eval([varargin{j*2-1} ' = ' mat2str(varargin{j*2}) ';']);
 	end
 end
@@ -63,8 +63,8 @@ cols = [1 0 0; 0 0 1; 0 1 0; 1 1 0; 1 0 1; 0 1 1;];
 for j=1:length(MPRdata.OV), 
 	ind = mod(j-1,length(MPRdata.OV))+1;
 	MPRdata.OV1{j} = cat(3,cols(ind,1)*ones(nx,ny),cols(ind,2)*ones(nx,ny),cols(ind,3)*ones(nx,ny));
-	MPRdata.OV2{j} = cat(3,cols(ind,1)*ones(nz,ny),cols(ind,2)*ones(nz,ny),cols(ind,3)*ones(nz,ny));
-	MPRdata.OV3{j} = cat(3,cols(ind,1)*ones(nz,nx),cols(ind,2)*ones(nz,nx),cols(ind,3)*ones(nz,nx));
+	MPRdata.OV2{j} = cat(3,cols(ind,1)*ones(nz,nx),cols(ind,2)*ones(nz,nx),cols(ind,3)*ones(nz,nx));
+	MPRdata.OV3{j} = cat(3,cols(ind,1)*ones(nz,ny),cols(ind,2)*ones(nz,ny),cols(ind,3)*ones(nz,ny));
 end
 
 msubplot(2,2,1,0,0,0,0,0,0); set(gca,'Clim',clim); mpr_slice(MPRdata,1); 
@@ -87,7 +87,7 @@ msubplot(2,2,4,0,0,0,0,0,0); imagesc(0);
 %alphamap([zeros(1,4),linspace(0,.14,34),0.9*ones(1,26)]); set(gca,'ZDir','reverse');
 h=colorbar('East'); set(h,'XColor','g','YColor','g');
 axis image; set(gca,'Clim',clim); axis off;
-colormap gray;
+colormap gray(256);
 
 MPRdata.h7=[]; 
 if ~isempty(oblique),
@@ -417,3 +417,75 @@ end
 end
 
 
+function h=msubplot(r,c,n,hs,vs,tb,bb,lb,rb)
+% MSUBPLOT(r,c,n,hs,vs,tb,bb,lb,rb)
+% Modified subplot utility
+%      r - rows
+%      c - columns
+%      n - plot number
+%      hs - horizontal spacing
+%      vs - vertical spacing
+%      tb - top border
+%      bb - bottom border
+%      lb - left border
+%      rb - right border
+
+% Web Stayman, January 1998
+
+yi = ceil(n/c);
+xi = mod(n-1,c)+1;
+
+if ~exist('tb','var'), tb = 0.05; end
+if ~exist('bb','var'), bb = 0.05; end
+if ~exist('lb','var'), lb = 0.05; end
+if ~exist('rb','var'), rb = 0.05; end
+if ~exist('hs','var'), hs = 0.03; end
+if ~exist('vs','var'), vs = 0.03; end
+
+xd = (1-lb-rb-(c-1)*hs)/c;
+yd = (1-tb-bb-(r-1)*hs)/r;
+
+x = lb+(xi-1)*(xd+hs);
+y = bb+(r-yi)*(yd+vs);
+
+ih=subplot('Position',[x,y,xd,yd]);
+
+if (nargout > 0)
+	h=ih;
+end
+end
+
+
+function [hh] = mtext(x,y,str,sz,col)
+% [h] - Text(x,y,str,ptsz,col) - Better text function.
+%   Inputs:
+%      x,y - text position
+%      str - string for label
+%      sz  - point size text (default=10)
+%      col - color of text (default=[0 0 0])
+%   Outputs:
+%      h   - Handle to label for current axes.
+
+% Web Stayman, January 1998
+% Needs to be extended for all text options.
+
+if exist('str','var'),
+	h = text(x,y,str);
+
+	if ~exist('sz','var'),  sz=10; end
+	if ~exist('col','var'), col=[0 0 0]; end
+	
+	set(h, 'FontAngle',  get(h, 'FontAngle'), ...
+	    'FontName',   get(h, 'FontName'), ...
+	    'FontSize',   get(h, 'FontSize'), ...
+	    'FontWeight', get(h, 'FontWeight'), ...
+	    'Rotation',   0, ...
+	    'FontSize',   sz, ...
+	    'Color',      col, ...
+	    'string',     str);
+end
+
+if nargout>0,
+	hh=h;
+end
+end
