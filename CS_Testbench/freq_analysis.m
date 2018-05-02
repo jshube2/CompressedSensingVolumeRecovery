@@ -57,11 +57,12 @@ plot(C, SSIMs(2, :), 'LineWidth', 2);
 plot(C, SSIMs(3, :), 'LineWidth', 2);
 plot(C, SSIMs(15, :), 'LineWidth', 2);
 plot(C, SSIMs(30, :), 'LineWidth', 2);
-legend('Vertebra CT', 'Head CT', 'Head MRI 1', 'Head MRI 13', 'Head MRI 28', 'location', 'southeast');
+legend('Vertebra CT', 'Head CT', 'Head MRI 1', 'Head MRI 13', 'Head MRI 28', 'location', 'best');
 xlabel('Nyquist cutoff');
 ylabel('SSIM');
 title('Fourier Frequency sparsity of images');
 set(gca, 'fontsize', 16);
+saveas(gcf, 'results\freq_analysis.png');
 
 %% MRI
 
