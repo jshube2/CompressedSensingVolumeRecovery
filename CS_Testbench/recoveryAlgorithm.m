@@ -24,18 +24,11 @@ function [A_hat, E_hat] = recoveryAlgorithm(volume, option, lambda)
                [A_hat(:,:,z), E_hat(:,:,z)] = inexact_alm_rpca(volume(:,:,z), lambda, tol, maxIter);
             end
             
-        case 'SVT'
-            addpath([cd '/svt']);
-            % Apply SVT matrix recovery on each matrix through depth, z
+        case 'ALM-MC'
+            addpath([cd '/inexact_alm_mc']);
+            % Apply RPCA via inexact ALM on each matrix through depth, z
             for z = 1:num_z
-               [A_hat(:,:,z), E_hat(:,:,z)] = singular_value_rpca(volume(:,:,z), lambda);
-            end
-            
-        case 'APG'
-            addpath([cd '/apg_partial']);
-            % Apply APG matrix recovery on each matrix through depth, z
-            for z = 1:num_z
-               [A_hat(:,:,z), E_hat(:,:,z)] = partial_proximal_gradient_rpca(volume(:,:,z), lambda);
+               [A_hat(:,:,z), E_hat(:,:,z)] = inexact_alm_mc(volume(:,:,z), tol, maxIter);
             end
     end
 end
